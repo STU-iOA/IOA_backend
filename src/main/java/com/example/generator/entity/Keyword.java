@@ -1,5 +1,6 @@
 package com.example.generator.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -21,7 +22,7 @@ public class Keyword implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("keywordId")
+    @TableId(value = "keywordId", type = IdType.AUTO)
     private Long keywordId;
 
     private String name;

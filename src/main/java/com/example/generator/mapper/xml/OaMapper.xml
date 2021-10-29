@@ -12,14 +12,11 @@
         <result column="keywords" property="keywords" />
         <result column="subscribeNumber" property="subscribeNumber" />
         <result column="collectNunber" property="collectNunber" />
-        <result column="time" property="time" />
-        <result column="place" property="place" />
-        <result column="keyText" property="keyText" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        OAId, content, timestamp, title, departmentId, keywords, subscribeNumber, collectNunber, time, place, keyText
+        OAId, content, timestamp, title, departmentId, keywords, subscribeNumber, collectNunber
     </sql>
 
 </mapper>

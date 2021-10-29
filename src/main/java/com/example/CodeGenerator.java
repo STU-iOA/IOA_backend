@@ -26,12 +26,12 @@ public class CodeGenerator {
 
         //数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://106.55.25.94:3307/OA");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/OA?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         //数据库连接用户名
-        dsc.setUsername("xiaowei");
+        dsc.setUsername("root");
         //数据库连接密码
-        dsc.setPassword("backend");
+        dsc.setPassword("ljh13926292266");
         mpg.setDataSource(dsc);
 
 
