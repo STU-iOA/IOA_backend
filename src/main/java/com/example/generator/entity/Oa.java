@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author www
- * @since 2021-10-29
+ * @since 2021-11-04
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -33,6 +33,9 @@ public class Oa implements Serializable {
 
     private String title;
 
+    /**
+     * SUBCOMPANYNAME对应
+     */
     @TableField("departmentId")
     private Long departmentId;
 
@@ -43,6 +46,18 @@ public class Oa implements Serializable {
 
     @TableField("collectNunber")
     private Integer collectNunber;
+
+    @TableField("readCount")
+    private Integer readCount;
+
+    @TableField("DEPARTMENTNAME")
+    private String departmentname;
+
+    @TableField("LOGINID")
+    private Integer loginid;
+
+    @TableField("LASTNAME")
+    private String lastname;
 
 
 }
