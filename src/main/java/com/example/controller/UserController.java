@@ -2,6 +2,7 @@ package com.example.controller;
 
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.example.demo.tokenDto;
 import com.example.generator.entity.User;
 import com.example.generator.services.UserService;
 import com.example.result.Result;
@@ -82,5 +83,13 @@ public class UserController {
         }
         return res == 1;
     }
+
+    @RequestMapping(value = "/getUser", method = RequestMethod.POST)
+    public Result getVerificationCode(@RequestBody tokenDto tokenDto){
+        String token=tokenDto.getToken();
+        StpUtil.getTokenValue();
+        return ResultFactory.buildSuccessResult(userService.getUser((Long) StpUtil.getLoginId()));
+    }
+
 }
 

@@ -25,5 +25,8 @@ public class UserService {
         userMapper.insert(user1);
         return user1.getUserId();
     }
+    public User getUser(Long userId){
+        return userMapper.selectById(userId);
+    }
 
 }
