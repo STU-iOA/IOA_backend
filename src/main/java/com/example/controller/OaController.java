@@ -1,7 +1,9 @@
 package com.example.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.demo.OADto;
+import com.example.demo.OAListDto;
 import com.example.generator.entity.Oa;
 import com.example.generator.services.DepartmentService;
 import com.example.generator.services.OAService;
@@ -38,6 +40,10 @@ public class OaController {
         oaDto.setDepartment(departmentService.getDepartment(oa.getDepartmentId()).getName());
         return ResultFactory.buildSuccessResult(oaDto);
     }
-    
+
+    @RequestMapping(value = "/OAList", method = RequestMethod.GET)
+    public Result OAList(@RequestParam Long page,@RequestParam Long size,@RequestParam(defaultValue="",required = false) String str){
+        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOAList(page, size, str)));
+    }
 }
 
