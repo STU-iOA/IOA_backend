@@ -29,6 +29,12 @@ public class OAService {
         queryWrapper.orderByDesc("timestamp");
         return oaMapper.selectPage(new Page<>(page,size),queryWrapper);
     }
+    public IPage<Oa> getOAListByList(Long page,Long size,List<Long> longList){
+        QueryWrapper<Oa> queryWrapper=new QueryWrapper<>();
+        queryWrapper.in("OAId",longList);
+        queryWrapper.orderByDesc("timestamp");
+        return oaMapper.selectPage(new Page<>(page,size),queryWrapper);
+    }
     public Oa getOA(Long OAId){
         return oaMapper.selectById(OAId);
     }
