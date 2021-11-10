@@ -26,11 +26,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserCollectController {
     @Autowired(required = false)
     UserCollectServer userCollectServer;
+    //收藏oa
     @RequestMapping(value = "/collectOA", method = RequestMethod.GET)
     public Result collectOA(@RequestParam String token, @RequestParam Long oaId){
         UserCollect userCollect=userCollectServer.insertUserCollect(oaId,Long.valueOf(StpUtil.getLoginIdByToken(token).toString()));
         return ResultFactory.buildSuccessResult(userCollect);
     }
-
+    //取消收藏
+    @RequestMapping(value = "/delectCollectOA", method = RequestMethod.GET)
+    public Result delectCollectOA(@RequestParam String token, @RequestParam Long oaId){
+        Long userId=Long.valueOf(StpUtil.getLoginIdByToken(token).toString());
+        userCollectServer.delectUserCollect(oaId,userId);
+        return ResultFactory.buildSuccessResult("成功");
+    }
 }
 
