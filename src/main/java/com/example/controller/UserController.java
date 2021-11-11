@@ -2,6 +2,7 @@ package com.example.controller;
 
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.example.demo.UserDto;
 import com.example.demo.tokenDto;
 import com.example.generator.entity.User;
 import com.example.generator.services.UserService;
@@ -36,15 +37,15 @@ public class UserController {
     @Autowired
     private UserService userService;
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Result getVerificationCode(@RequestBody User user) {
+    public Result getVerificationCode(@RequestBody UserDto user) {
         String account= user.getAccount();
-        String password= user.getPassword();
+        String password=user.getPassword();
         //这里填入判断账号密码对错的API
         boolean if_allow=login(account, password);
         //
         if (!if_allow)
             return ResultFactory.buildFailResult("错误");
-        Long userId=userService.if_allow(account,password);
+        Long userId=userService.if_allow(account);
         //返回token
         StpUtil.setLoginId(userId);
         return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());

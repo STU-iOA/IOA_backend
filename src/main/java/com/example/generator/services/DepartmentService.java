@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DepartmentService {
-    @Autowired
+    @Autowired(required = false)
     public DepartmentMapper departmentMapper;
 
     public Department getDepartment(Long departmentId){

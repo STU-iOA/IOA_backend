@@ -61,5 +61,10 @@ public class OaController {
         List<Long> oaIdList=userCollectServer.getUserCollect(page,size,userId).getRecords().stream().map(UserCollect::getOAId).collect(Collectors.toList());
         return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOAListByList(page, size, oaIdList)));
     }
+    @RequestMapping(value = "/insertOA", method = RequestMethod.GET)
+    public Result insertOA(){
+        oaService.insertOA();
+        return ResultFactory.buildSuccessResult("ok");
+    }
 }
 

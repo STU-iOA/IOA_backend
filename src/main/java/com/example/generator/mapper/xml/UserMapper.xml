@@ -5,15 +5,13 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.example.generator.entity.User">
         <id column="userId" property="userId" />
-        <result column="nickName" property="nickName" />
-        <result column="password" property="password" />
         <result column="createTime" property="createTime" />
         <result column="account" property="account" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        userId, nickName, password, createTime, account
+        userId, createTime, account
     </sql>
 
 </mapper>

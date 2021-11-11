@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author www
- * @since 2021-11-04
+ * @since 2021-11-11
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,11 +26,6 @@ public class User implements Serializable {
 
     @TableId(value = "userId", type = IdType.AUTO)
     private Long userId;
-
-    @TableField("nickName")
-    private String nickName;
-
-    private String password;
 
     @TableField("createTime")
     private LocalDateTime createTime;
