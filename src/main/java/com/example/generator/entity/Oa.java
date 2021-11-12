@@ -45,16 +45,16 @@ public class Oa implements Serializable {
     private Integer subscribeNumber;
 
     @TableField("collectNunber")
-    private Integer collectNunber;
+    private Integer collectNumber;
 
     @TableField("readCount")
     private Integer readCount;
 
     @TableField("DEPARTMENTNAME")
-    private String departmentname;
+    private String departmentName;
 
     @TableField("LOGINID")
-    private Integer loginid;
+    private Integer loginId;
 
     @TableField("LASTNAME")
     private String lastname;
