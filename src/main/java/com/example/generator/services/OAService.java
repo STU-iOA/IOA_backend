@@ -100,10 +100,10 @@ public class OAService {
                 oatem.setTimestamp(LocalDateTime.parse(timestr,df));
                 if (time.isBefore(oatem.getTimestamp())){
                     //oa初始化
-                    oatem.setCollectNunber(0);
+                    oatem.setCollectNumber(0);
                     oatem.setContent((String) hashMap.get("DOCCONTENT"));
-                    oatem.setDepartmentname((String) hashMap.get("DEPARTMENTNAME"));
-                    oatem.setLoginid(0);
+                    oatem.setDepartmentName((String) hashMap.get("DEPARTMENTNAME"));
+                    oatem.setLoginId(0);
                     oatem.setTitle((String) hashMap.get("DOCSUBJECT"));
                     oaMapper.insert(oatem);
                 }else {
