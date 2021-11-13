@@ -141,7 +141,7 @@ public class OAService {
         OAListDto oaListDto=new OAListDto();
         oaListDto.setIfNext(oaIPage.isSearchCount());
         List<OADto> oaDtoList=new ArrayList<>();
-        OADto ot=new OADto();
+        OADto ot;
         for(Oa item:oaIPage.getRecords()){
             ot=new OADto();
             BeanUtils.copyProperties(item,ot);

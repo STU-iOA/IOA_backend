@@ -16,7 +16,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -49,6 +48,12 @@ public class UserController {
         //返回token
         StpUtil.setLoginId(userId);
         return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());
+    }
+
+    @PostMapping(value = "/getAccount")
+    public Result getInfo(@RequestBody tokenDto tokenDto) {
+        Long userId=Long.valueOf(StpUtil.getLoginIdByToken(tokenDto.getToken()).toString());
+        return ResultFactory.buildSuccessResult(userService.getUser(userId).getAccount());
     }
 
     private boolean login(String username, String password) {
