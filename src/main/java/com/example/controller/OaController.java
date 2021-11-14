@@ -50,8 +50,10 @@ public class OaController {
     }
 
     @RequestMapping(value = "/OAList", method = RequestMethod.GET)
-    public Result OAList(@RequestParam Long page,@RequestParam Long size,@RequestParam(defaultValue="",required = false) String str){
-        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOAList(page, size, str)));
+    public Result OAList(@RequestParam Long page,@RequestParam Long size,@RequestParam(defaultValue="",required = false) String str,
+                         @RequestParam(defaultValue = "1") boolean order){
+        OAListDto oaListDto=oaService.oaList2Dto(oaService.getOAList(page, size, str,order));
+        return ResultFactory.buildSuccessResult(oaListDto);
     }
 
     //查看收藏oa信息
