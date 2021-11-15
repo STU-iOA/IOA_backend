@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
  * @author www
  * @since 2021-10-29
  */
-@Controller
+@RestController
 @RequestMapping("/generator/oa")
 public class OaController {
     @Autowired
@@ -50,8 +51,10 @@ public class OaController {
     }
 
     @RequestMapping(value = "/OAList", method = RequestMethod.GET)
-    public Result OAList(@RequestParam Long page,@RequestParam Long size,@RequestParam(defaultValue="",required = false) String str){
-        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOAList(page, size, str)));
+    public Result OAList(@RequestParam Long page,@RequestParam Long size,@RequestParam(defaultValue="",required = false) String str,
+                         @RequestParam(defaultValue = "1") boolean order){
+        OAListDto oaListDto=oaService.oaList2Dto(oaService.getOAList(page, size, str,order));
+        return ResultFactory.buildSuccessResult(oaListDto);
     }
 
     //查看收藏oa信息

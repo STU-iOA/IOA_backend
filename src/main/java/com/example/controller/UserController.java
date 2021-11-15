@@ -94,7 +94,7 @@ public class UserController {
     public Result getVerificationCode(@RequestBody tokenDto tokenDto){
         String token=tokenDto.getToken();
         StpUtil.getTokenValue();
-        return ResultFactory.buildSuccessResult(userService.getUser((Long) StpUtil.getLoginId()));
+        return ResultFactory.buildSuccessResult(userService.getUser(Long.valueOf(StpUtil.getLoginIdByToken(tokenDto.getToken()).toString())));
     }
 
 }

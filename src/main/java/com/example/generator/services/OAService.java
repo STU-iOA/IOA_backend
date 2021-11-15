@@ -114,10 +114,14 @@ public class OAService {
     }
 
 
-    public IPage<Oa> getOAList(Long page,Long size,String searchStr){
+    public IPage<Oa> getOAList(Long page,Long size,String searchStr,Boolean order){
         QueryWrapper<Oa> queryWrapper=new QueryWrapper<>();
-        queryWrapper.like("title",searchStr).or().like("context",searchStr);
-        queryWrapper.orderByDesc("timestamp");
+        queryWrapper.like("title",searchStr).or().like("content",searchStr);
+        if (order){
+            queryWrapper.orderByDesc("timestamp");
+        }else{
+            queryWrapper.orderByDesc("collectNumber");
+        }
         return oaMapper.selectPage(new Page<>(page,size),queryWrapper);
     }
     public IPage<Oa> getOAListByList(Long page,Long size,List<Long> longList){
@@ -143,5 +147,12 @@ public class OAService {
         }
         oaListDto.setOaDtoList(oaDtoList);
         return oaListDto;
+    }
+
+    public Oa oaJoinNumber(Long OaId){
+        Oa oa=getOA(OaId);
+        oa.setCollectNumber(oa.getCollectNumber()+1);
+        oaMapper.updateById(oa);
+        return oa;
     }
 }
