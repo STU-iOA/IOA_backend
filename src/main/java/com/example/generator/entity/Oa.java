@@ -44,7 +44,7 @@ public class Oa implements Serializable {
     @TableField("subscribeNumber")
     private Integer subscribeNumber;
 
-    @TableField("collectNunber")
+    @TableField("collectNumber")
     private Integer collectNumber;
 
     @TableField("readCount")

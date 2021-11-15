@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.OADto;
 import com.example.demo.OAListDto;
-import com.example.generator.entity.Department;
 import com.example.generator.entity.Oa;
 import com.example.generator.mapper.DepartmentMapper;
 import com.example.generator.mapper.OaMapper;
@@ -16,11 +15,8 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,6 +25,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,20 +36,15 @@ public class OAService {
     @Autowired(required = false)
     DepartmentMapper departmentMapper;
 
-    public static List StringToList(String str){
+    public static List<String> StringToList(String str){
 
-        List list = new ArrayList();
+        List<String> list = new ArrayList<>();
 
         String[] strArr = str.split(",");
 
-        for(String s:strArr){
-
-            list.add(s);
-
-        }
+        Collections.addAll(list, strArr);
 
         return list;
-
     }
 
     //OA自动获取
@@ -69,7 +61,7 @@ public class OAService {
             LocalDateTime time=oa.getTimestamp();
             boolean ifgoone=true;
             while (ifgoone) {
-                String apiUrl = "http://wechat.stu.edu.cn//webservice_oa/OA/GetDOCdetail?row_start=" + String.valueOf(star) + "&row_end=" + String.valueOf(end);
+                String apiUrl = "http://wechat.stu.edu.cn//webservice_oa/OA/GetDOCdetail?row_start=" + star + "&row_end=" + end;
                 URI uri = null;
                 CloseableHttpClient httpClient = HttpClients.createDefault();
                 try {
@@ -87,6 +79,7 @@ public class OAService {
                 String ref = "";
                 try {
 //                System.out.println(EntityUtils.toString(response.getEntity()));
+                    assert response != null;
                     ref = EntityUtils.toString(response.getEntity(), "UTF-8");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -100,10 +93,10 @@ public class OAService {
                 oatem.setTimestamp(LocalDateTime.parse(timestr,df));
                 if (time.isBefore(oatem.getTimestamp())){
                     //oa初始化
-                    oatem.setCollectNunber(0);
+                    oatem.setCollectNumber(0);
                     oatem.setContent((String) hashMap.get("DOCCONTENT"));
-                    oatem.setDepartmentname((String) hashMap.get("DEPARTMENTNAME"));
-                    oatem.setLoginid(0);
+                    oatem.setDepartmentName((String) hashMap.get("DEPARTMENTNAME"));
+                    oatem.setLoginId(0);
                     oatem.setTitle((String) hashMap.get("DOCSUBJECT"));
                     oaMapper.insert(oatem);
                 }else {
