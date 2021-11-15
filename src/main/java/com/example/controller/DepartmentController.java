@@ -4,6 +4,7 @@ package com.example.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Controller;
  * @author www
  * @since 2021-10-29
  */
-@Controller
+@RestController
 @RequestMapping("/generator/department")
 public class DepartmentController {
 

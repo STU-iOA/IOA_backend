@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
  * @author www
  * @since 2021-10-29
  */
-@Controller
+@RestController
 @RequestMapping("/generator/oa")
 public class OaController {
     @Autowired

@@ -15,6 +15,6 @@ public class OA implements ApplicationRunner {
     OAService oaService;
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        oaService.insertOA();
+        oaService.insertOA();
     }
 }

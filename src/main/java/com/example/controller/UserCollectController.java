@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author www
  * @since 2021-10-29
  */
-@Controller
+@RestController
 @RequestMapping("/generator/userCollect")
 public class UserCollectController {
     @Autowired(required = false)
