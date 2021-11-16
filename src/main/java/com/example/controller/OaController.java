@@ -2,7 +2,6 @@ package com.example.controller;
 
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.demo.OADto;
 import com.example.demo.OAListDto;
 import com.example.generator.entity.Oa;
@@ -14,12 +13,7 @@ import com.example.result.Result;
 import com.example.result.ResultFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,6 +62,11 @@ public class OaController {
     public Result insertOA(){
         oaService.insertOA();
         return ResultFactory.buildSuccessResult("ok");
+    }
+
+    @GetMapping(value = "/get-oalist-by-department")
+    public Result getOaListByDepartment(@RequestParam Long page,@RequestParam Long size, @RequestParam String department){
+        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOAListByDepartment(page, size, department)));
     }
 }
 

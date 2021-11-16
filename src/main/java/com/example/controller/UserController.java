@@ -4,7 +4,6 @@ package com.example.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.demo.UserDto;
 import com.example.demo.tokenDto;
-import com.example.generator.entity.User;
 import com.example.generator.services.UserService;
 import com.example.result.Result;
 import com.example.result.ResultFactory;
@@ -50,8 +49,8 @@ public class UserController {
         return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());
     }
 
-    @PostMapping(value = "/getAccount")
-    public Result getInfo(@RequestBody tokenDto tokenDto) {
+    @PostMapping(value = "/account")
+    public Result getAccount(@RequestBody tokenDto tokenDto) {
         Long userId=Long.valueOf(StpUtil.getLoginIdByToken(tokenDto.getToken()).toString());
         return ResultFactory.buildSuccessResult(userService.getUser(userId).getAccount());
     }

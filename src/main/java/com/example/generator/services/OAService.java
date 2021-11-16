@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.OADto;
 import com.example.demo.OAListDto;
+import com.example.generator.entity.Department;
 import com.example.generator.entity.Oa;
 import com.example.generator.mapper.DepartmentMapper;
 import com.example.generator.mapper.OaMapper;
@@ -111,6 +112,14 @@ public class OAService {
                 e.printStackTrace();
             }
         }
+    }
+
+    public IPage<Oa> getOAListByDepartment(Long page,Long size,String departmentName){
+        return oaMapper.selectPage(new Page<>(page,size),
+                new QueryWrapper<Oa>().eq("departmentId",
+                        departmentMapper.selectOne(
+                                new QueryWrapper<Department>().eq("name", departmentName)).getDepartmentId())
+                .orderByDesc("timestamp"));
     }
 
 
