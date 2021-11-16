@@ -143,7 +143,7 @@ public class OAService {
 
     public OAListDto oaList2Dto(IPage<Oa> oaIPage){
         OAListDto oaListDto=new OAListDto();
-        oaListDto.setIfNext(oaIPage.isSearchCount());
+        oaListDto.setIfNext(oaIPage.getPages()*oaIPage.getSize()<oaIPage.getTotal());
         List<OADto> oaDtoList=new ArrayList<>();
         OADto ot;
         for(Oa item:oaIPage.getRecords()){
