@@ -2,16 +2,13 @@ package com.example.controller;
 
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.example.demo.OADto;
-import com.example.demo.OAListDto;
-import com.example.generator.entity.Oa;
-import com.example.generator.entity.UserCollect;
-import com.example.generator.services.DepartmentService;
-import com.example.generator.services.OAService;
-import com.example.generator.services.UserCollectServer;
+import com.example.vo.OaListDto;
+import com.example.entity.TbOa;
+import com.example.entity.TbUserFavorites;
 import com.example.result.Result;
 import com.example.result.ResultFactory;
-import org.springframework.beans.BeanUtils;
+import com.example.service.ITbOaService;
+import com.example.service.ITbUserFavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,46 +24,44 @@ import java.util.stream.Collectors;
  * @since 2021-10-29
  */
 @RestController
-@RequestMapping("/generator/oa")
+@RequestMapping("/oa")
 public class OaController {
     @Autowired
-    public OAService oaService;
-    @Autowired
-    public DepartmentService departmentService;
+    private ITbOaService oaService;
     @Autowired(required = false)
-    UserCollectServer userCollectServer;
-    @RequestMapping(value = "/getOA", method = RequestMethod.GET)
-    public Result getOA(@RequestParam Long OAId){
-        Oa oa=oaService.getOA(OAId);
-        OADto oaDto=new OADto();
-        BeanUtils.copyProperties(oa,oaDto);
-        oaDto.setDepartment(departmentService.getDepartment(oa.getDepartmentId()).getName());
-        return ResultFactory.buildSuccessResult(oaDto);
+    private ITbUserFavoritesService userCollectService;
+
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
+    public Result geDetails(@RequestParam Long OAId){
+        TbOa oa = oaService.getOa(OAId);
+        if (oa == null) return ResultFactory.buildFailResult("OA 不存在。");
+        return ResultFactory.buildSuccessResult(oa);
     }
 
-    @RequestMapping(value = "/OAList", method = RequestMethod.GET)
-    public Result OAList(@RequestParam Long page,@RequestParam Long size,@RequestParam(defaultValue="",required = false) String str,
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public Result getList(@RequestParam Long page, @RequestParam Long size, @RequestParam(defaultValue="",required = false) String str,
                          @RequestParam(defaultValue = "1") boolean order){
-        OAListDto oaListDto=oaService.oaList2Dto(oaService.getOAList(page, size, str,order));
+        OaListDto oaListDto=oaService.oaList2Dto(oaService.getOaList(page, size, str, order));
         return ResultFactory.buildSuccessResult(oaListDto);
     }
 
     //查看收藏oa信息
-    @RequestMapping(value = "/getCollectOA", method = RequestMethod.GET)
-    public Result getCollectOA(@RequestParam String token,@RequestParam Long page,@RequestParam Long size){
-        Long userId=Long.valueOf(StpUtil.getLoginIdByToken(token).toString());
-        List<Long> oaIdList=userCollectServer.getUserCollect(page,size,userId).getRecords().stream().map(UserCollect::getOAId).collect(Collectors.toList());
-        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOAListByList(page, size, oaIdList)));
-    }
-    @RequestMapping(value = "/insertOA", method = RequestMethod.GET)
-    public Result insertOA(){
-        oaService.insertOA();
-        return ResultFactory.buildSuccessResult("ok");
+    @RequestMapping(value = "/favorites", method = RequestMethod.GET)
+    public Result getFavorites(@RequestParam String token,@RequestParam Long page,@RequestParam Long size){
+        Long userId = Long.valueOf(StpUtil.getLoginIdByToken(token).toString());
+        List<Long> oaIdList = userCollectService.getUserCollect(page,size,userId).getRecords().stream().map(TbUserFavorites::getOaId).collect(Collectors.toList());
+        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOaListByList(page, size, oaIdList)));
     }
 
-    @GetMapping(value = "/get-oalist-by-department")
-    public Result getOaListByDepartment(@RequestParam Long page,@RequestParam Long size, @RequestParam String department){
-        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOAListByDepartment(page, size, department)));
+    @RequestMapping(value = "/auto-update-oa", method = RequestMethod.GET)
+    public Result autoUpdateOa(){
+        new Thread(()->oaService.autoUpdateOa()).start();
+        return ResultFactory.buildSuccessResult("Auto-update started.");
+    }
+
+    @GetMapping(value = "/list-by-department")
+    public Result getListByDepartment(@RequestParam Long page,@RequestParam Long size, @RequestParam String department){
+        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOaListByDepartment(page, size, department)));
     }
 }
 
