@@ -2,24 +2,13 @@ package com.example.controller;
 
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.example.demo.UserDto;
-import com.example.demo.tokenDto;
-import com.example.generator.entity.User;
-import com.example.generator.services.UserService;
+import com.example.vo.UserDto;
+import com.example.vo.TokenDto;
 import com.example.result.Result;
 import com.example.result.ResultFactory;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import com.example.service.ITbUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * <p>
@@ -29,73 +18,42 @@ import java.net.URISyntaxException;
  * @author www
  * @since 2021-10-28
  */
-//@Controller
 @RestController
-@RequestMapping("/generator/user")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private ITbUserService userService;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result getVerificationCode(@RequestBody UserDto user) {
-        String account= user.getAccount();
-        String password=user.getPassword();
-        //这里填入判断账号密码对错的API
-        boolean if_allow=login(account, password);
-        //
-        if (!if_allow)
-            return ResultFactory.buildFailResult("错误");
-        Long userId=userService.if_allow(account);
+        String account = user.getAccount();
+        String password = user.getPassword();
+        if (!userService.login(account, password)) return ResultFactory.buildFailResult("账号或密码错误。");
+        Long userId = userService.if_allow(account);
         //返回token
-        StpUtil.setLoginId(userId);
-        return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());
-    }
-
-    @PostMapping(value = "/getAccount")
-    public Result getInfo(@RequestBody tokenDto tokenDto) {
-        Long userId=Long.valueOf(StpUtil.getLoginIdByToken(tokenDto.getToken()).toString());
-        return ResultFactory.buildSuccessResult(userService.getUser(userId).getAccount());
-    }
-
-    private boolean login(String username, String password) {
-        String apiUrl = "http://wechat.stu.edu.cn//webservice_oa/OA/Login" +
-                "?username=" + username + "&password=" + password;
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        URI uri = null;
-        try {
-            uri = new URIBuilder(apiUrl).build();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        if (userId==0){
+            userId=userService.insertUser(account);
+            StpUtil.setLoginId(userId);
+            return ResultFactory.buildSuccessFirstResult(StpUtil.getTokenValue());
+        }else {
+            StpUtil.setLoginId(userId);
+            return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());
         }
-        HttpGet httpGet = new HttpGet(uri);
-        CloseableHttpResponse response = null;
-        int res = 0;
-        try {
-            response = httpClient.execute(httpGet);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                String content = EntityUtils.toString(response.getEntity(), "UTF-8");
-                res = Integer.parseInt(content);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (response != null) {
-                    response.close();
-                }
-                httpClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return res == 1;
     }
 
-    @RequestMapping(value = "/getUser", method = RequestMethod.POST)
-    public Result getVerificationCode(@RequestBody tokenDto tokenDto){
-        String token=tokenDto.getToken();
-        StpUtil.getTokenValue();
-        return ResultFactory.buildSuccessResult(userService.getUser(Long.valueOf(StpUtil.getLoginIdByToken(tokenDto.getToken()).toString())));
+    @PostMapping(value = "/account")
+    public Result getAccount(@RequestBody TokenDto tokenDto) {
+        Object loginId = StpUtil.getLoginIdByToken(tokenDto.getToken());
+        if (loginId == null) return ResultFactory.buildResultTokenError(null);
+        return ResultFactory.buildSuccessResult(userService.getUser(Long.valueOf(loginId.toString())).getAccount());
     }
+
+/*    @RequestMapping(value = "/get-user", method = RequestMethod.POST)
+    public Result getVerificationCode(@RequestBody TokenDto tokenDto){
+        Object loginId = StpUtil.getLoginIdByToken(tokenDto.getToken());
+        if (loginId == null) return ResultFactory.buildResultTokenError(null);
+        return ResultFactory.buildSuccessResult(userService.getUser(Long.valueOf(loginId.toString())));
+    }*/
 
 }
 
