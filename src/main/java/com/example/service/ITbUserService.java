@@ -13,5 +13,6 @@ import com.example.entity.TbUser;
 public interface ITbUserService {
     Long if_allow(String account);
     TbUser getUser(Long userId);
+    Long insertUser(String account);
     boolean login(String account, String password);
 }

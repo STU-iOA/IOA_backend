@@ -31,8 +31,14 @@ public class UserController {
         if (!userService.login(account, password)) return ResultFactory.buildFailResult("账号或密码错误。");
         Long userId = userService.if_allow(account);
         //返回token
-        StpUtil.setLoginId(userId);
-        return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());
+        if (userId==0){
+            userId=userService.insertUser(account);
+            StpUtil.setLoginId(userId);
+            return ResultFactory.buildSuccessFirstResult(StpUtil.getTokenValue());
+        }else {
+            StpUtil.setLoginId(userId);
+            return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());
+        }
     }
 
     @PostMapping(value = "/account")
