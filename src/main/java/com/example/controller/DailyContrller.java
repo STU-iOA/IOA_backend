@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.example.entity.TbDaily;
 import com.example.entity.UserDailyDto;
 import com.example.result.Result;
 import com.example.result.ResultFactory;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -47,7 +45,7 @@ public class DailyContrller {
         return ResultFactory.buildSuccessResult(dailyService.id2ListByDate(Long.valueOf(loginId.toString()),date));
     }
     @GetMapping(value = "/check")
-    public Result check(@RequestParam Long daily){
-        return ResultFactory.buildSuccessResult(dailyService.cheak(daily));
+    public Result check(@RequestParam Long dailyId){
+        return ResultFactory.buildSuccessResult(dailyService.cheak(dailyId));
     }
 }
