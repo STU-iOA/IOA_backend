@@ -11,7 +11,7 @@ import com.example.entity.TbUser;
  * @since 2021-11-17
  */
 public interface ITbUserService {
-    Long if_allow(String account);
+    boolean ifAllowed(TbUser user);
     TbUser getUser(Long userId);
     Long insertUser(String account);
     boolean login(String account, String password);

@@ -2,7 +2,7 @@ package com.example.result;
 
 public class ResultFactory {
     public static Result buildSuccessResult(Object data) {
-        return buildResult(ResultCode.SUCCESS, "成功", data);
+        return buildResult(ResultCode.SUCCESS, "成功。", data);
     }
     public static Result buildSuccessFirstResult(Object data) {
         return buildResult(ResultCode.SUCCESSFIRST, "成功", data);
@@ -20,6 +20,6 @@ public class ResultFactory {
         return new Result(resultCode, message, data);
     }
     public static Result buildResultTokenError(Object data) {
-        return buildResult(ResultCode.TOKEN_FAIL, "token有误", data);
+        return buildResult(ResultCode.TOKEN_FAIL, "token 有误。", data);
     }
 }
