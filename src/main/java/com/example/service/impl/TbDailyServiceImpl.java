@@ -2,7 +2,7 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.entity.TbDaily;
-import com.example.mapper.xml.TbDailyMapper;
+import com.example.mapper.TbDailyMapper;
 import com.example.service.ITbDailyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

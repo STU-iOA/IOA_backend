@@ -35,9 +35,6 @@ public class TbUserServiceImpl implements ITbUserService {
             newUser.setId(user.getId());
             return true;
         }
-        return 0L;
-    }
-    public Long insertUser(String account){
         //添加用户
         userMapper.insert(newUser);
         return false;
