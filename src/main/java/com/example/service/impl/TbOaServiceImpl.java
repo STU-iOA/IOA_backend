@@ -145,7 +145,7 @@ public class TbOaServiceImpl implements ITbOaService {
 
     public OaListDto oaList2Dto(IPage<TbOa> oaIPage) {
         OaListDto oaListDto = new OaListDto();
-        oaListDto.setIfNext(oaIPage.isSearchCount());
+        oaListDto.setIfNext(oaIPage.getSize()*oaIPage.getPages()>=oaIPage.getTotal());
         List<OaListItem> list = new ArrayList<>();
         OaListItem ot;
         for (TbOa item: oaIPage.getRecords()) {
