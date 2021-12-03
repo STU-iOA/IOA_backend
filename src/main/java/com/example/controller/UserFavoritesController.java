@@ -5,11 +5,7 @@ import com.example.result.Result;
 import com.example.result.ResultFactory;
 import com.example.service.ITbUserFavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -19,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author www
  * @since 2021-10-29
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("user-favorites")
 public class UserFavoritesController {
@@ -27,7 +24,7 @@ public class UserFavoritesController {
     //收藏oa
     @RequestMapping(value = "/add-to-favorites", method = RequestMethod.GET)
     public Result addToFavorites(@RequestParam String token, @RequestParam Long oaId) {
-        Object loginId = StpUtil.getLoginIdByToken(token).toString();
+        Object loginId = StpUtil.getLoginIdByToken(token);
         if (loginId == null) return ResultFactory.buildResultTokenError(null);
         int resCode = userCollectService.save(oaId, Long.valueOf(loginId.toString()));
         if (resCode == 0) return ResultFactory.buildFailResult("该 OA 已收藏。");
@@ -38,7 +35,7 @@ public class UserFavoritesController {
     //取消收藏
     @RequestMapping(value = "/remove-from-favorites", method = RequestMethod.GET)
     public Result removeFromFavorites(@RequestParam String token, @RequestParam Long oaId) {
-        Object loginId = StpUtil.getLoginIdByToken(token).toString();
+        Object loginId = StpUtil.getLoginIdByToken(token);
         if (loginId == null) return ResultFactory.buildResultTokenError(null);
         int resCode = userCollectService.remove(oaId, Long.valueOf(loginId.toString()));
         if (resCode == 0) return ResultFactory.buildFailResult("该 OA 未收藏。");

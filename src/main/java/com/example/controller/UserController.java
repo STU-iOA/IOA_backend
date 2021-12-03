@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @author www
  * @since 2021-10-28
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -26,13 +27,13 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result getVerificationCode(@RequestBody UserDto user) {
-        String account = user.getAccount();
-        String password = user.getPassword();
-        if (!userService.login(account, password)) return ResultFactory.buildFailResult("账号或密码错误。");
-        Long userId = userService.if_allow(account);
+        if (!userService.login(user.getAccount(), user.getPassword())) return ResultFactory.buildFailResult("账号或密码错误。");
+        boolean exists = userService.ifAllowed(user);
+        StpUtil.setLoginId(user.getId());
         //返回token
-        StpUtil.setLoginId(userId);
-        return ResultFactory.buildSuccessResult(StpUtil.getTokenValue());
+        String token = StpUtil.getTokenValue();
+        if (exists) return ResultFactory.buildSuccessResult(token);
+        return ResultFactory.buildResult(202, "用户第一次登录成功。", token);
     }
 
     @PostMapping(value = "/account")
