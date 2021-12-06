@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.controller.Sample;
 import com.example.vo.OaListDto;
 import com.example.vo.DocDetail;
 import com.example.entity.TbOa;
@@ -26,6 +27,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,7 +43,8 @@ import java.util.Locale;
 public class TbOaServiceImpl implements ITbOaService {
     @Autowired(required = false)
     TbOaMapper oaMapper;
-
+    @Autowired
+    Sample sample;
     //OA自动获取
     public void autoUpdateOa() {
         while (true) {
@@ -54,7 +57,7 @@ public class TbOaServiceImpl implements ITbOaService {
                 else flag = false;
             }
             try {
-                Thread.sleep(60000);
+                Thread.sleep(600000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -63,6 +66,9 @@ public class TbOaServiceImpl implements ITbOaService {
 
     private void save(DocDetail doc) {
         TbOa newOa = new TbOa();
+        HashMap<String,String> hashMap=sample.Sample(doc.getDOCCONTENT(),doc.getDOCSUBJECT());
+        newOa.setKeywords(hashMap.get("keyword"));
+        newOa.setKeyText(hashMap.get("Summary"));
         newOa.setTitle(doc.getDOCSUBJECT());
         newOa.setContent(doc.getDOCCONTENT());
         newOa.setTimestamp(doc.getDOCVALIDDATE() == null || doc.getDOCVALIDTIME() == null ? null
