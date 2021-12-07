@@ -54,8 +54,8 @@ public class TbUserFavoritesServiceImpl implements ITbUserFavoritesService {
         oaMapper.updateById(tbOa);
         return userFavoritesMapper.delete(queryWrapper);
     }
-    public IPage<TbUserFavorites> getUserCollect(Long page, Long size, Long userId) {
+    public IPage<TbUserFavorites> getByUserId(Long page, Long size, Long userId) {
         return userFavoritesMapper.selectPage(new Page<>(page,size),
-                new QueryWrapper<TbUserFavorites>().eq("user_id",userId));
+                new QueryWrapper<TbUserFavorites>().eq("user_id",userId).orderByDesc("create_time"));
     }
 }

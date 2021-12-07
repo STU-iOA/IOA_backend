@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.example.entity.UserDailyDto;
+import com.example.vo.UserDailyDto;
 import com.example.result.Result;
 import com.example.result.ResultFactory;
 import com.example.service.ITbDailyService;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/daily")
-public class DailyContrller {
+public class DailyController {
     @Autowired
     ITbDailyService dailyService;
     @PostMapping(value = "/add-to-daily")

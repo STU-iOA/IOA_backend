@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
  * @author www
  * @since 2021-10-29
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/oa")
 public class OaController {
@@ -48,8 +49,11 @@ public class OaController {
     //查看收藏oa信息
     @RequestMapping(value = "/favorites", method = RequestMethod.GET)
     public Result getFavorites(@RequestParam String token,@RequestParam Long page,@RequestParam Long size){
-        Long userId = Long.valueOf(StpUtil.getLoginIdByToken(token).toString());
-        List<Long> oaIdList = userCollectService.getUserCollect(page,size,userId).getRecords().stream().map(TbUserFavorites::getOaId).collect(Collectors.toList());
+        Object loginId = StpUtil.getLoginIdByToken(token);
+        if (loginId == null) return ResultFactory.buildResultTokenError(null);
+        Long userId = Long.valueOf(loginId.toString());
+        List<Long> oaIdList = userCollectService.getByUserId(page,size,userId).getRecords().stream().map(TbUserFavorites::getOaId).collect(Collectors.toList());
+        if (oaIdList.size() == 0) return ResultFactory.buildFailResult("收藏夹为空。");
         return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOaListByList(page, size, oaIdList)));
     }
 
