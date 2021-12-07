@@ -29,19 +29,15 @@ import java.net.URISyntaxException;
 public class TbUserServiceImpl implements ITbUserService {
     @Autowired
     TbUserMapper userMapper;
-    public Long if_allow(String account) {
-        TbUser user=userMapper.selectOne(new QueryWrapper<TbUser>().eq("account", account));
-        if (user!=null){
-            return user.getId();
+    public boolean ifAllowed(TbUser newUser) {
+        TbUser user = userMapper.selectOne(new QueryWrapper<TbUser>().eq("account", newUser.getAccount()));
+        if (user != null) {
+            newUser.setId(user.getId());
+            return true;
         }
-        return 0L;
-    }
-    public Long insertUser(String account){
         //添加用户
-        TbUser newUser = new TbUser();
-        newUser.setAccount(account);
         userMapper.insert(newUser);
-        return newUser.getId();
+        return false;
     }
     public TbUser getUser(Long userId){
         return userMapper.selectById(userId);

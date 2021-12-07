@@ -51,13 +51,23 @@ public class TbOaServiceImpl implements ITbOaService {
     //OA自动获取
     public void autoUpdateOa() {
         while (true) {
+            /*// 从数据库 select 一条出来
             TbOa oa = oaMapper.selectOne(new QueryWrapper<TbOa>().orderByDesc("timestamp").last("limit 1"));
             boolean flag = true;
             for (int start = 1, end = 1; flag; start++, end++) {
+                //从接口获取最新的一条
                 DocDetail doc = getNewOa(start, end);
                 if (doc == null) break;
+                // 如果 title 不一样就存进数据库
                 if (!oa.getTitle().equals(doc.getDOCSUBJECT())) save(doc);
                 else flag = false;
+            }*/
+            for (int start = 1, end = 1;; start++, end++) {
+                DocDetail doc = getNewOa(start, end);
+                if (doc == null || oaMapper.selectOne(new QueryWrapper<TbOa>()
+                        .eq("title", doc.getDOCSUBJECT()).orderByDesc("create_time").last("limit 1")) == null)
+                    break;
+                save(doc);
             }
             try {
                 Thread.sleep(3600000);
@@ -118,7 +128,6 @@ public class TbOaServiceImpl implements ITbOaService {
                         .orderByDesc("timestamp"));
     }
 
-
     public IPage<TbOa> getOaList(Long page, Long size, String searchStr, Boolean order) {
         QueryWrapper<TbOa> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("title",searchStr).or().like("content",searchStr);
@@ -133,7 +142,6 @@ public class TbOaServiceImpl implements ITbOaService {
     public IPage<TbOa> getOaListByList(Long page, Long size, List<Long> longList) {
         QueryWrapper<TbOa> queryWrapper=new QueryWrapper<>();
         queryWrapper.in("id",longList);
-        queryWrapper.orderByDesc("timestamp");
         return oaMapper.selectPage(new Page<>(page,size),queryWrapper);
     }
     public TbOa getOa(Long OAId){
