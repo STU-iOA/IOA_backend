@@ -62,6 +62,8 @@ public class TbOaServiceImpl implements ITbOaService {
                 if (!oa.getTitle().equals(doc.getDOCSUBJECT())) save(doc);
                 else flag = false;
             }*/
+            TbOa oa = oaMapper.selectOne(new QueryWrapper<TbOa>().orderByDesc("timestamp").last("limit 1"));
+            boolean flag = true;
             for (int start = 1, end = 1;; start++, end++) {
                 DocDetail doc = getNewOa(start, end);
                 if (doc == null || oaMapper.selectOne(new QueryWrapper<TbOa>()
