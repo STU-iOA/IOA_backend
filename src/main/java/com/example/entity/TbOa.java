@@ -78,5 +78,8 @@ public class TbOa implements Serializable {
 
     private LocalDateTime updateTime;
 
-
+    /**
+     * 关键文本
+     */
+    private String keyText;
 }
