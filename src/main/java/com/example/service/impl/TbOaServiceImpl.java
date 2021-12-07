@@ -11,6 +11,7 @@ import com.example.entity.TbOa;
 import com.example.mapper.TbOaMapper;
 import com.example.service.ITbOaService;
 import com.example.vo.OaListItem;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -57,7 +60,7 @@ public class TbOaServiceImpl implements ITbOaService {
                 else flag = false;
             }
             try {
-                Thread.sleep(600000);
+                Thread.sleep(3600000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -66,7 +69,7 @@ public class TbOaServiceImpl implements ITbOaService {
 
     private void save(DocDetail doc) {
         TbOa newOa = new TbOa();
-        HashMap<String,String> hashMap=sample.Sample(doc.getDOCCONTENT(),doc.getDOCSUBJECT());
+        HashMap<String,String> hashMap=sample.Sample(Character_processing(doc.getDOCCONTENT()),doc.getDOCSUBJECT());
         newOa.setKeywords(hashMap.get("keyword"));
         newOa.setKeyText(hashMap.get("Summary"));
         newOa.setTitle(doc.getDOCSUBJECT());
@@ -153,5 +156,15 @@ public class TbOaServiceImpl implements ITbOaService {
         }
         oaListDto.setOaDtoList(list);
         return oaListDto;
+    }
+    //字符处理
+    String Character_processing(String str){
+        List<String> results= new ArrayList<String>();
+        Pattern p =Pattern.compile(">(.*?)<");
+        Matcher m =p.matcher(str);
+        while (!m.hitEnd()&&m.find()){
+            results.add(m.group(1));
+        }
+        return StringUtils.join(results.toArray(),"");
     }
 }
