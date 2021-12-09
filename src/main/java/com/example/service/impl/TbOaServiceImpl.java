@@ -48,9 +48,13 @@ public class TbOaServiceImpl implements ITbOaService {
     TbOaMapper oaMapper;
     @Autowired
     Sample sample;
+
+    private boolean stop;
+
     //OA自动获取
     public void autoUpdateOa() {
-        while (true) {
+        stop = false;
+        while (!stop) {
             /*// 从数据库 select 一条出来
             TbOa oa = oaMapper.selectOne(new QueryWrapper<TbOa>().orderByDesc("timestamp").last("limit 1"));
             boolean flag = true;
@@ -65,16 +69,20 @@ public class TbOaServiceImpl implements ITbOaService {
             for (int start = 1, end = 1;; start++, end++) {
                 DocDetail doc = getNewOa(start, end);
                 if (doc == null || oaMapper.selectOne(new QueryWrapper<TbOa>()
-                        .eq("title", doc.getDOCSUBJECT()).orderByDesc("create_time").last("limit 1")) == null)
+                        .eq("title", doc.getDOCSUBJECT())) != null)
                     break;
                 save(doc);
             }
             try {
-                Thread.sleep(3600000);
+                Thread.sleep(600000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void stopUpdating() {
+        stop = true;
     }
 
     private void save(DocDetail doc) {

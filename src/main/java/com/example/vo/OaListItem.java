@@ -13,4 +13,5 @@ public class OaListItem {
     private String keywords;
     private Integer favoredCount;
     private Integer readCount;
+    private String keyText;
 }

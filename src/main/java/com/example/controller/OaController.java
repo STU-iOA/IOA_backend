@@ -54,13 +54,21 @@ public class OaController {
         Long userId = Long.valueOf(loginId.toString());
         List<Long> oaIdList = userCollectService.getByUserId(page,size,userId).getRecords().stream().map(TbUserFavorites::getOaId).collect(Collectors.toList());
         if (oaIdList.size() == 0) return ResultFactory.buildFailResult("收藏夹为空。");
-        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOaListByList(page, size, oaIdList)));
+        return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOaListByList(1L, size, oaIdList)));
     }
 
     @RequestMapping(value = "/auto-update-oa", method = RequestMethod.GET)
     public Result autoUpdateOa(){
         new Thread(()->oaService.autoUpdateOa()).start();
+        System.out.println("Auto-update started.");
         return ResultFactory.buildSuccessResult("Auto-update started.");
+    }
+
+    @RequestMapping(value = "/stop-updating-oa", method = RequestMethod.GET)
+    public Result stopUpdating(){
+        oaService.stopUpdating();
+        System.out.println("Auto-update stopped.");
+        return ResultFactory.buildSuccessResult("Auto-update stopped.");
     }
 
     @GetMapping(value = "/list-by-department")
