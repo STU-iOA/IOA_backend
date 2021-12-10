@@ -66,15 +66,8 @@ public class TbOaServiceImpl implements ITbOaService {
                 if (!oa.getTitle().equals(doc.getDOCSUBJECT())) save(doc);
                 else flag = false;
             }*/
-            TbOa oa = oaMapper.selectOne(new QueryWrapper<TbOa>().orderByDesc("timestamp").last("limit 1"));
-            boolean flag = true;
-            for (int start = 1, end = 1;; start++, end++) {
-                DocDetail doc = getNewOa(start, end);
-                if (doc == null || oaMapper.selectOne(new QueryWrapper<TbOa>()
-                        .eq("title", doc.getDOCSUBJECT())) != null)
-                    break;
-                save(doc);
-            }
+            for (int i = 1; insertOa(i); i++)
+                ;
             try {
                 Thread.sleep(600000);
             } catch (InterruptedException e) {
@@ -85,6 +78,15 @@ public class TbOaServiceImpl implements ITbOaService {
 
     public void stopUpdating() {
         stop = true;
+    }
+
+    public boolean insertOa(int index) {
+        DocDetail doc = getNewOa(index);
+        if (doc == null || oaMapper.selectOne(new QueryWrapper<TbOa>()
+                .eq("title", doc.getDOCSUBJECT())) != null)
+            return false;
+        save(doc);
+        return true;
     }
 
     private void save(DocDetail doc) {
@@ -106,8 +108,8 @@ public class TbOaServiceImpl implements ITbOaService {
         oaMapper.insert(newOa);
     }
 
-    private DocDetail getNewOa(int start, int end) {
-        String apiUrl = "http://wechat.stu.edu.cn//webservice_oa/OA/GetDOCdetail?row_start=" + start + "&row_end=" + end;
+    private DocDetail getNewOa(int index) {
+        String apiUrl = "http://wechat.stu.edu.cn//webservice_oa/OA/GetDOCdetail?row_start=" + index + "&row_end=" + index;
         URI uri = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
@@ -177,7 +179,7 @@ public class TbOaServiceImpl implements ITbOaService {
     }
     //字符处理
     String Character_processing(String str){
-        List<String> results= new ArrayList<String>();
+        List<String> results= new ArrayList<>();
         Pattern p =Pattern.compile(">(.*?)<");
         Matcher m =p.matcher(str);
         while (!m.hitEnd()&&m.find()){

@@ -29,6 +29,7 @@ CREATE TABLE `tb_oa` (
     `subcompany_name` varchar(50) CHARACTER SET utf8mb4 NULL DEFAULT '' comment 'SUBCOMPANYNAME',
     `department_name` varchar(50) CHARACTER SET utf8mb4 NULL DEFAULT '' comment 'DEPARTMENTNAME',
     `keywords` varchar(255) CHARACTER SET utf8mb4 NULL DEFAULT '',
+    `key_text` varchar(255) CHARACTER SET utf8mb4 NULL DEFAULT '',
     `favored_count` int NULL DEFAULT 0 comment '收藏数',
     `read_count` int NULL DEFAULT 0 comment '阅读量',
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

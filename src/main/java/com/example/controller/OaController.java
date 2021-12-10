@@ -71,6 +71,14 @@ public class OaController {
         return ResultFactory.buildSuccessResult("Auto-update stopped.");
     }
 
+    @RequestMapping(value = "/insert", method = RequestMethod.GET)
+    public Result insertOa(@RequestParam int index){
+        if (oaService.insertOa(index)) {
+            return ResultFactory.buildSuccessResult(index + "th OA inserted.");
+        }
+        return ResultFactory.buildFailResult("Insertion failed.");
+    }
+
     @GetMapping(value = "/list-by-department")
     public Result getListByDepartment(@RequestParam Long page,@RequestParam Long size, @RequestParam String department){
         return ResultFactory.buildSuccessResult(oaService.oaList2Dto(oaService.getOaListByDepartment(page, size, department)));
