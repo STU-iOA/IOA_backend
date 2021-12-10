@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface ITbOaService {
     void autoUpdateOa();
+    void stopUpdating();
     IPage<TbOa> getOaListByDepartment(Long page, Long size, String departmentName);
     IPage<TbOa> getOaList(Long page, Long size, String searchStr, Boolean order);
     IPage<TbOa> getOaListByList(Long page, Long size, List<Long> longList);

@@ -60,7 +60,15 @@ public class OaController {
     @RequestMapping(value = "/auto-update-oa", method = RequestMethod.GET)
     public Result autoUpdateOa(){
         new Thread(()->oaService.autoUpdateOa()).start();
+        System.out.println("Auto-update started.");
         return ResultFactory.buildSuccessResult("Auto-update started.");
+    }
+
+    @RequestMapping(value = "/stop-updating-oa", method = RequestMethod.GET)
+    public Result stopUpdating(){
+        oaService.stopUpdating();
+        System.out.println("Auto-update stopped.");
+        return ResultFactory.buildSuccessResult("Auto-update stopped.");
     }
 
     @GetMapping(value = "/list-by-department")
