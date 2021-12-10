@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 @CrossOrigin(origins = "*")
@@ -25,7 +26,7 @@ public class DailyController {
         if (loginId == null) return ResultFactory.buildResultTokenError("token有误");
         tbDaily.setUserId(Long.valueOf(loginId.toString()));
         tbDaily.setIfComplete(0);
-        tbDaily.setDate(LocalDateTime.now());
+        tbDaily.setTimesTamp(tbDaily.getDate().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         tbDaily.setTimesTamp(new Date().getTime());
         return ResultFactory.buildSuccessResult(dailyService.insert(tbDaily));
     }

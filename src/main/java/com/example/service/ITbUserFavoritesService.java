@@ -14,5 +14,5 @@ import com.example.entity.TbUserFavorites;
 public interface ITbUserFavoritesService {
     int save(Long oaId, Long userId);
     int remove(Long oaId, Long userId);
-    IPage<TbUserFavorites> getByUserId(Long page, Long size, Long userId);
+    IPage<TbUserFavorites> getByUserId(Long page,Long size,Long userId);
 }
