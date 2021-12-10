@@ -34,6 +34,7 @@ public class Sample {
         HashMap<String, Object> options2 = new HashMap();
         JSONObject res2 = client.keyword(title2, content, options2);
         List<String> keywordref=new ArrayList<>();
+        HashMap<String, String> options3 = new HashMap();
         if(res2.has("items")){
             JSONArray keywordArr = res2.getJSONArray("items");
 
@@ -43,11 +44,12 @@ public class Sample {
                 System.out.println(keyword.getString("tag"));
                 keywordref.add(keyword.getString("tag"));
             }
+            options3.put("keyword",StringUtils.join(keywordref,';'));
+        }else{
+            options3.put("keyword","");
         }
 
-        HashMap<String, String> options3 = new HashMap();
         options3.put("Summary",res.get("summary").toString());
-        options3.put("keyword",StringUtils.join(keywordref,';'));
         return options3;
     }
 
